@@ -51,8 +51,8 @@ fn fetch_orders(token: &str, start: &str, end: &str) -> Result<Orders, Box<dyn E
 
     let mut orders: Orders = result.into_json()?;
 
-    while next.is_some() {
-        let result = ureq::get(&next.unwrap().raw_uri)
+    while let Some(n) = next {
+        let result = ureq::get(&n.raw_uri)
             .set("X-Shopify-Access-Token", token)
             .call()?;
         link = parse_link_header::parse_with_rel(result.header("link").unwrap())?;
@@ -70,11 +70,7 @@ fn main() {
     let month_end = if cli.month == 12 { 1 } else { cli.month + 1 };
     let year_end = if cli.month == 12 { cli.year + 1 } else { cli.year };
 
-    let token = if let Some(token) = cli.token {
-        token
-    } else {
-        panic!("No token provided");
-    };
+    let token = cli.token.expect("No token provided");
 
     let start = Central
         .with_ymd_and_hms(cli.year, cli.month, 1, 0, 0, 0)
