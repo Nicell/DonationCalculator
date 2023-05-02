@@ -1,0 +1,14 @@
+# include author
+[package]
+name = "donation-cli"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chrono = "0.4.24"
+chrono-tz = "0.8.2"
+clap = { version = "4.2.5", features = ["derive", "env"] }
+parse_link_header = "0.3.3"
+serde = { version = "1.0.160", features = ["derive"] }
+serde_json = "1.0.96"
+ureq = { version = "2.6.2", features = ["json"] }
